@@ -2,12 +2,14 @@
   "name": "foolishness-medical-care",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "/dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch --env-file=.env ./src/server.ts",
+    "build": "--later",
+    "start": "node --env-file=.env ."
   },
   "keywords": [],
-  "author": "",
+  "author": "retr0lbb",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
@@ -17,6 +19,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@types/express": "^5.0.5",
     "@types/node": "^24.9.2",
     "tsup": "^8.5.0",
     "tsx": "^4.20.6",
