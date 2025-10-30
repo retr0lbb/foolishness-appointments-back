@@ -1,0 +1,16 @@
+services:
+  db:
+    image: bitnami/mysql:latest
+    container_name: foolish_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=docker
+      - MYSQL_PASSWORD=docker
+      - MYSQL_DATABASE=foolish
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/bitnami/mysql/data
+
+volumes:
+  mysql_data:
