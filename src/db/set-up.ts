@@ -1,30 +1,31 @@
-import {connection} from "./client"
+import {getConnection} from "./client"
 
 
 async function setUpDatabase(){
+    const conn = await getConnection()
     try {
-        connection.query("DROP TABLE IF EXISTS payments;")
-        connection.query("DROP TABLE IF EXISTS appointments;")
-        connection.query("DROP TABLE IF EXISTS specialization;")
-        connection.query("DROP TABLE IF EXISTS doctors;")
-        connection.query("DROP TABLE IF EXISTS patients;")
-        connection.query("DROP TABLE IF EXISTS staff;")
+        conn.query("DROP TABLE IF EXISTS payments;")
+        conn.query("DROP TABLE IF EXISTS appointments;")
+        conn.query("DROP TABLE IF EXISTS specialization;")
+        conn.query("DROP TABLE IF EXISTS doctors;")
+        conn.query("DROP TABLE IF EXISTS patients;")
+        conn.query("DROP TABLE IF EXISTS staff;")
 
-        connection.query(`
+        conn.query(`
             CREATE TABLE IF NOT EXISTS doctors (
                 crm VARCHAR(255) PRIMARY KEY UNIQUE,
                 phone VARCHAR(32) NOT NULL,
                 name VARCHAR(255) NOT NULL
             );`)
 
-        connection.query(`
+        conn.query(`
             CREATE TABLE IF NOT EXISTS specialization (
                 rqe INT PRIMARY KEY AUTO_INCREMENT,
                 doctor_id VARCHAR(255) NOT NULL,
                 FOREIGN KEY (doctor_id) REFERENCES doctors(crm)
             );`) 
 
-        connection.query(`
+        conn.query(`
             CREATE TABLE IF NOT EXISTS patients (
                 cpf VARCHAR(255) PRIMARY KEY UNIQUE,
                 phone VARCHAR(32) NOT NULL,
@@ -32,14 +33,14 @@ async function setUpDatabase(){
                 address VARCHAR(255) NOT NULL
             );`)
             
-        connection.query(`
+        conn.query(`
             CREATE TABLE IF NOT EXISTS staff (
                 code INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(255) NOT NULL,
                 job_function VARCHAR(255) NOT NULL
             );`)
 
-        connection.query(`
+        conn.query(`
             CREATE TABLE IF NOT EXISTS appointments (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 patient_cpf VARCHAR(255) NOT NULL,
@@ -51,7 +52,7 @@ async function setUpDatabase(){
                 FOREIGN KEY (staff_code) REFERENCES staff(code)
             );`)
 
-        connection.query(`
+        conn.query(`
             CREATE TABLE IF NOT EXISTS payments (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 value DECIMAL(10, 2) NOT NULL,
@@ -61,7 +62,7 @@ async function setUpDatabase(){
             );`)
 
 
-        connection.end()
+        conn.end()
 
             console.log("all fine")
     } catch (error) {
