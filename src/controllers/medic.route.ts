@@ -46,6 +46,7 @@ router.get("/", async (req, res) => {
       FROM doctors
     `;
 
+    // biome-ignore lint/suspicious/noExplicitAny: no need
     const params: any[] = [];
 
     if (crm && state) {
@@ -142,7 +143,6 @@ router.put("/:id", async (req, res) => {
             [crm, name, phone, req.params.id]
         );
 
-        // 3. retorno bonito
         res.status(200).json({
             message: "Medic updated successfully",
             medic: {

@@ -6,6 +6,7 @@ async function setUpDatabase(){
     try {
         conn.query("DROP TABLE IF EXISTS payments;")
         conn.query("DROP TABLE IF EXISTS appointments;")
+        conn.query("DROP TABLE IF EXISTS doctor_specialization;")
         conn.query("DROP TABLE IF EXISTS specialization;")
         conn.query("DROP TABLE IF EXISTS doctors;")
         conn.query("DROP TABLE IF EXISTS patients;")
@@ -20,21 +21,13 @@ async function setUpDatabase(){
             );`)
 
         conn.query(`
-            CREATE TABLE IF NOT EXISTS specialization (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                rqe VARCHAR(255) NOT NULL
-            );`) 
-
-        conn.query(`
-            CREATE TABLE IF NOT EXISTS doctor_specialization(
+            CREATE TABLE doctor_specialization (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 doctor_id BINARY(16) NOT NULL,
-                specialization_id INT NOT NULL,
-
-                FOREIGN KEY (doctor_id) REFERENCES doctors(id),
-                FOREIGN KEY (specialization_id) REFERENCES specialization(id)
-            )
-            `)
+                specialization VARCHAR(255) NOT NULL,
+                RQE VARCHAR(255) UNIQUE NOT NULL,
+                FOREIGN KEY (doctor_id) REFERENCES doctors(id)
+            );`)
 
         conn.query(`
             CREATE TABLE IF NOT EXISTS patients (
