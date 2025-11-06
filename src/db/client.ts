@@ -7,6 +7,6 @@ export async function getConnection() {
     user: "docker",
     database:"foolish",
     password: "docker",
-    rowsAsArray: true
+    rowsAsArray: false
   });
 }
