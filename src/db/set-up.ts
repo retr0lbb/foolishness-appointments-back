@@ -31,7 +31,7 @@ async function setUpDatabase() {
 		conn.query(`
             CREATE TABLE IF NOT EXISTS patients (
                 id BINARY(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())), 
-                cpf VARCHAR(255) UNIQUE,
+                cpf VARCHAR(255) NOT NULL UNIQUE,
                 phone VARCHAR(32) NOT NULL,
                 name VARCHAR(255) NOT NULL,
                 address VARCHAR(255) NOT NULL
