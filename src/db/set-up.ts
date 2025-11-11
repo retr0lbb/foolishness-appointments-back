@@ -48,11 +48,11 @@ async function setUpDatabase() {
             CREATE TABLE IF NOT EXISTS appointments (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 patient_cpf VARCHAR(255) NOT NULL,
-                doctor_crm VARCHAR(255) NOT NULL,
+                doctor_id BINARY(16) NOT NULL,
                 staff_code INT NOT NULL,
                 date DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (patient_cpf) REFERENCES patients(cpf),
-                FOREIGN KEY (doctor_crm) REFERENCES doctors(crm),
+                FOREIGN KEY (doctor_id) REFERENCES doctors(id),
                 FOREIGN KEY (staff_code) REFERENCES staff(code)
             );`);
 

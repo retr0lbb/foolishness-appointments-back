@@ -28,4 +28,18 @@ router.post("/", async (req, res) => {
 		throw error;
 	}
 });
+
+router.get("/", async (_, res) => {
+	try {
+		const conn = await getConnection();
+
+		const [staffs] = await conn.query<Staff[]>(
+			"SELECT name, job_function, code FROM staff;",
+		);
+
+		return res.status(200).json({ staffs });
+	} catch (error) {
+		throw error;
+	}
+});
 export { router };
