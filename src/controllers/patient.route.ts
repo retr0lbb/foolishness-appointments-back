@@ -45,6 +45,41 @@ router.get("/", async (_, res) => {
 	}
 });
 
+router.get("/cpf", async (req, res) => {
+	console.log("🔥 ROTA /cpf FOI CHAMADA!");
+	try {
+		const conn = await getConnection();
+
+		const { cpf } = req.query;
+
+		if (!cpf) {
+			return res.status(400).json({ message: "CPF is required" });
+		}
+
+		const [patient, _] = await conn.query<Patient[]>(
+			"SELECT BIN_TO_UUID(id) as id, cpf, name, address FROM patients WHERE cpf = '49453819840'",
+		);
+
+		console.log("Buscando CPF:", cpf); // Debug
+		console.log("Resultado:", patient); // Debug
+
+		if (patient.length <= 0) {
+			return res.status(404).json({ message: "User not found asdadas" });
+		}
+
+		if (patient.length > 1) {
+			return res.status(500).json({
+				message: "Error duplicated keys found, please contact your db manager",
+			});
+		}
+
+		return res.status(200).json({ patient: patient[0] });
+	} catch (error) {
+		console.error("Erro na query:", error); // Debug melhor
+		res.status(500).json({ message: "An unexpected Error occurred", error });
+	}
+});
+
 router.get("/:id", async (req, res) => {
 	try {
 		const conn = await getConnection();

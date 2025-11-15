@@ -7,10 +7,15 @@ import { router as PaymentRouter } from "./controllers/payments.route";
 import { router as StaffRouter } from "./controllers/staff.route";
 
 import bodyParser from "body-parser";
+import cors from "cors";
 
 const app = express();
 app.use(bodyParser.json());
-
+app.use(
+	cors({
+		origin: "*",
+	}),
+);
 app.use("/appointments", AppointmentsRouter);
 app.use("/doctors", MedicRouter);
 app.use("/specialties", EspecialityRouter);
