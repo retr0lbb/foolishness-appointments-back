@@ -37,16 +37,38 @@ router.post("/", async (req, res) => {
 	}
 });
 
-router.get("/", async (_, res) => {
+router.get("/", async (req, res) => {
 	try {
 		const conn = await getConnection();
-		const [appointments] = await conn.query<Appointment[]>(
-			"SELECT id, patient_cpf, BIN_TO_UUID(doctor_id) as doctor_id, staff_code, date FROM appointments",
-		);
+		const { cpf } = req.query;
+
+		let sql = `
+			SELECT 
+				a.id, 
+				a.patient_cpf, 
+				BIN_TO_UUID(a.doctor_id) as doctor_id,
+				d.name as doctor_name,
+				d.crm as doctor_crm,
+				a.staff_code, 
+				a.date 
+			FROM appointments a
+			LEFT JOIN doctors d ON a.doctor_id = d.id
+		`;
+		const params: any[] = [];
+
+		if (cpf) {
+			sql += " WHERE a.patient_cpf = ?";
+			params.push(cpf);
+		}
+
+		sql += " ORDER BY a.date DESC";
+
+		const [appointments] = await conn.query<Appointment[]>(sql, params);
 
 		return res.status(200).json({ appointments });
 	} catch (error) {
-		throw error;
+		console.error(error);
+		return res.status(500).json({ error: "Failed to fetch appointments" });
 	}
 });
 

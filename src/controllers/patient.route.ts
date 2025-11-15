@@ -57,7 +57,8 @@ router.get("/cpf", async (req, res) => {
 		}
 
 		const [patient, _] = await conn.query<Patient[]>(
-			"SELECT BIN_TO_UUID(id) as id, cpf, name, address FROM patients WHERE cpf = '49453819840'",
+			"SELECT BIN_TO_UUID(id) as id, cpf, name, address FROM patients WHERE cpf = ?",
+			[cpf],
 		);
 
 		console.log("Buscando CPF:", cpf); // Debug
